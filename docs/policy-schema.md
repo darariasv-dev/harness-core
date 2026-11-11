@@ -10,16 +10,20 @@ providers:                       # backends; `enabled` defaults to true
 tiers:                           # name -> {provider, model}; the legacy `name: model-id` form still works
   free:   {provider: ollama,     model: qwen2.5:7b-instruct}
   cheap:  {provider: claude_cli, model: claude-haiku-4-5-20251001}
-  strong: {provider: claude_cli, model: claude-sonnet-5}
+  strong: {provider: claude_cli, model: claude-sonnet-5-5}
+  top:    {provider: claude_cli, model: claude-opus-5-5}           # only for purposes that name it
 tasks:                           # purpose -> tier; unlisted purposes use default_tier
-  example_assessment: cheap
-default_tier: cheap
+  example_assessment: cheap      # moved down by a proven agreement study
+default_tier: strong             # Sonnet unless a purpose is moved down, or up to `top`
 eval_status: {}                  # written by the study (cheap vs strong)
 eval_status_by_tier: {}          # written by the study (any candidate tier)
 ```
 
 Resolution order in `router.resolve_route`: `pinned_tiers[purpose]` > `tier_override` >
-`tasks[purpose]` > `default_tier` > a hardcoded safe default. A tier naming a provider that
+`tasks[purpose]` > `default_tier` > a hardcoded safe default (the `strong` tier on Sonnet,
+since 0.5.0). A purpose therefore runs on Sonnet unless something names another tier for it:
+down to `cheap`/`free` on measured evidence, up to `top` because it needs the higher model.
+A tier naming a provider that
 is disabled or missing fails the call with `HeadlessCallFailed`; it never silently uses
 another backend.
 

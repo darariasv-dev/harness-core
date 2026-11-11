@@ -96,8 +96,12 @@ def _safe_environment(extra_env: Optional[dict] = None) -> dict[str, str]:
     env.update(extra_env or {})
     return env
 
-_FALLBACK_MODEL = "claude-haiku-4-5-20251001"
-_FALLBACK_TIER = "cheap"
+# The last-resort route for a policy that names no usable tier: the STRONG tier, on Sonnet.
+# A purpose nobody has classified gets the capable model, never a silent drop to the cheapest
+# one; it moves DOWN only once a `tasks:` entry backed by an agreement study says it can, and
+# UP (a `top` tier) only where a policy or an in-code pin names it for that purpose.
+_FALLBACK_MODEL = "claude-sonnet-5-5"
+_FALLBACK_TIER = "strong"
 _FALLBACK_PROVIDER = "claude_cli"
 
 _QUOTA_ERROR_MARKERS = providers_module._QUOTA_ERROR_MARKERS
@@ -330,7 +334,8 @@ def resolve_route(
     pinned_tiers: Optional[dict] = None,
 ) -> Route:
     """A missing/malformed policy, or a `purpose` not listed in `tasks`, never blocks a call
-    -- falls through to the policy's own `default_tier`, then to a hardcoded safe default.
+    -- falls through to the policy's own `default_tier`, then to a hardcoded safe default
+    (the strong tier on Sonnet).
     `tier_override` bypasses the purpose->tier lookup (the mechanism an agreement study uses
     to force the SAME input through multiple tiers); `pinned_tiers` beats even that."""
     tiers = routing_policy.get("tiers") or {}

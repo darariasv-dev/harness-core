@@ -44,6 +44,30 @@ def test_resolve_model_never_blocks_on_empty_policy():
     assert tier == router._FALLBACK_TIER
 
 
+def test_fallback_default_is_the_strong_tier_on_sonnet():
+    """0.5.0: an unclassified purpose gets Sonnet, never a silent drop to the cheapest model
+    and never a silent climb to a higher one."""
+    assert router._FALLBACK_TIER == "strong"
+    assert "sonnet" in router._FALLBACK_MODEL
+
+
+def test_policy_without_a_default_tier_routes_unlisted_purposes_to_strong():
+    policy = {"tiers": {"cheap": "model-a", "strong": "model-b", "top": "model-c"}, "tasks": {"task1": "cheap"}}
+    assert router.resolve_model("unknown_task", policy) == ("model-b", "strong")
+    assert router.resolve_model("task1", policy) == ("model-a", "cheap")
+
+
+def test_a_higher_tier_is_used_only_when_a_purpose_names_it():
+    policy = {
+        "tiers": {"cheap": "model-a", "strong": "model-b", "top": "model-c"},
+        "tasks": {"hard_task": "top"},
+        "default_tier": "strong",
+    }
+    assert router.resolve_model("hard_task", policy) == ("model-c", "top")
+    assert router.resolve_model("anything_else", policy) == ("model-b", "strong")
+    assert router.resolve_model("pinned_task", policy, pinned_tiers={"pinned_task": "top"}) == ("model-c", "top")
+
+
 def _fake_completed(returncode, stdout, stderr=""):
     return MagicMock(returncode=returncode, stdout=stdout, stderr=stderr)
 

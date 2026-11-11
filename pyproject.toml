@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "harness-core"
-version = "0.4.0"
+version = "0.5.0"
 description = "Domain-agnostic core of a headless-model pipeline harness: tiered routing over pluggable providers, composite-fingerprint cache, usage ledger, failure classes, workflow lock, demotion/escalation rule, agreement evals, checkpoint block, offline test guard."
 readme = "README.md"
 requires-python = ">=3.9"

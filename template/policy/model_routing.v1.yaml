@@ -9,7 +9,10 @@
 #   until you name one and put its key in .env under api_key_env (never written here).
 # tiers: tier name -> {provider, model}.
 # tasks: purpose (the string passed to call_model and recorded in the ledger) -> tier.
-#   default_tier applies to any purpose not listed. Purposes pinned in code
+#   default_tier applies to any purpose not listed, and is `strong` (Sonnet): a purpose
+#   starts there, moves DOWN to cheap/free only on a proven agreement study, and moves UP
+#   to `top` only by being named here (or pinned in code) because it needs the higher
+#   model. Nothing reaches `top` by default. Purposes pinned in code
 #   (myproject.router.PINNED_STRONG) cannot be moved by anything in this file.
 # eval_status / eval_status_by_tier: written by the agreement study, never by hand.
 version: v2
@@ -36,7 +39,10 @@ tiers:
     model: claude-haiku-4-5-20251001
   strong:
     provider: claude_cli
-    model: claude-sonnet-5
+    model: claude-sonnet-5-5
+  top:
+    provider: claude_cli
+    model: claude-opus-5-5
 tasks:
   example_assessment: cheap
-default_tier: cheap
+default_tier: strong

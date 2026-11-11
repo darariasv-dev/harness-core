@@ -9,4 +9,4 @@ concept from any project that consumes it. Project-specific wiring -- which purp
 pinned, what the cache fingerprints are, what a "demotion" means -- lives in the consuming
 project's thin adapter modules; `template/` shows the shape. See docs/architecture.md."""
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
