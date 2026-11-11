@@ -1,0 +1,23 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Full version-support range this package claims (requires-python >=3.9), not just
+        # the two endpoints -- blueprint G-16, exercising every consumer's floor
+        # (Opportunity-Engine 3.12, Mission Control 3.10, agent-system 3.9) plus the ceiling.
+        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[test]"
+      - name: core tests (offline; the guard fails any real network or process call)
+        run: pytest -q
+      - name: template project tests
+        run: pip install -e template && cd template && pytest -q
+      - name: end-to-end example with a fake provider (no model calls)
+        run: python examples/minimal_pipeline.py --run-dir /tmp/example-run

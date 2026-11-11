@@ -1,0 +1,42 @@
+# Model routing policy. Versioned and content-hashed: harness_core.policy.load_yaml_policy
+# returns this file's sha256 so it can be folded into every cache key (myproject.cache's
+# routing_hash) -- a routing change invalidates exactly the cached results it should.
+#
+# providers: the backends. claude_cli is the headless `claude -p` CLI on a subscription
+#   (no API key, no per-call charge). ollama is a LOCAL server, loopback only (the
+#   constructor refuses any other host); set num_ctx explicitly -- Ollama's default 4,096
+#   silently truncates long prompts. hosted_free is an OpenAI-compatible endpoint, disabled
+#   until you name one and put its key in .env under api_key_env (never written here).
+# tiers: tier name -> {provider, model}.
+# tasks: purpose (the string passed to call_model and recorded in the ledger) -> tier.
+#   default_tier applies to any purpose not listed. Purposes pinned in code
+#   (myproject.router.PINNED_STRONG) cannot be moved by anything in this file.
+# eval_status / eval_status_by_tier: written by the agreement study, never by hand.
+version: v2
+providers:
+  claude_cli:
+    type: claude_cli
+  ollama:
+    type: ollama
+    base_url: http://127.0.0.1:11434
+    num_ctx: 32768
+    think: false
+    enabled: false
+  hosted_free:
+    type: openai_compatible
+    base_url: ''
+    api_key_env: HOSTED_FREE_API_KEY
+    enabled: false
+tiers:
+  free:
+    provider: ollama
+    model: qwen2.5:7b-instruct
+  cheap:
+    provider: claude_cli
+    model: claude-haiku-4-5-20251001
+  strong:
+    provider: claude_cli
+    model: claude-sonnet-5
+tasks:
+  example_assessment: cheap
+default_tier: cheap

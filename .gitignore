@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+.env
+.DS_Store
+.workflow.lock
+# per-project runtime state: never commit model outputs, ledgers, caches, or run dirs
+data/
+runs/
+*.db
+*.jsonl
+!tests/**/*.jsonl
+.claude/settings.local.json
