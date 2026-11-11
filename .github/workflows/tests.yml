@@ -5,9 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Full version-support range this package claims (requires-python >=3.9), not just
-        # the two endpoints -- blueprint G-16, exercising every consumer's floor
-        # (Opportunity-Engine 3.12, Mission Control 3.10, agent-system 3.9) plus the ceiling.
+        # The full version range this package claims (requires-python >=3.9), not just the
+        # two endpoints.
         python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4

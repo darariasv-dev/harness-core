@@ -1,6 +1,6 @@
 # Adopting the harness in a new project
 
-1. **Install.** `pip install -e /path/to/Harness_Pipeline` (or a git URL).
+1. **Install.** `pip install "git+https://github.com/darariasv-dev/harness-core"` (or `pip install -e` a local clone).
 2. **Copy `template/`** to your project root and rename `myproject/` everywhere. Read
    `template/CLAUDE.md`; it is your project's working agreement.
 3. **Name your purposes.** Each model-touching call gets one string used for both the ledger

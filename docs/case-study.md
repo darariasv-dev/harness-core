@@ -3,8 +3,7 @@
 A personal, local-first pipeline (FastAPI + SQLite, one user, a hard $0-extra-spend rule: all
 model calls through the headless `claude -p` CLI on an existing subscription). Six stations:
 search, assess, decide, draft, fill, submit. The harness modules here were extracted from it
-after the pipeline reached its first real, externally confirmed end-to-end outcome on
-2026-09-13. No personal data from that project is in this repository.
+after the pipeline's first complete live runs on 2026-09-12 and 2026-09-13. No personal data from that project is in this repository.
 
 ## What was proven
 
@@ -12,11 +11,11 @@ after the pipeline reached its first real, externally confirmed end-to-end outco
 |---|---|
 | Deterministic stages carry most of the work | 19 model calls total across 22 runs; search, screening, drafting, rendering, checks, and the final action made none |
 | The cache works | second runs over unchanged inputs: 0 calls; one context change: exactly 1 call |
-| Measurement decides tiers | cheap tier 0.914 agreement (proven) on one task, 0.367 (escalated) on the other, 35 real fixtures each |
-| A free local model was tried and rejected on evidence | 0.20 and 0.34 agreement, and it tended to assert unsupported claims; 0 new strong-tier calls thanks to reference reuse |
+| Measurement decides tiers | cheap tier agreed with the strong tier on 32 of 35 real fixtures (0.914, moved down) for one task and 11 of 30 (0.367, kept strong) for the other |
+| A free local model was tried and rejected on evidence | 7 of 35 (0.20) and 12 of 35 (0.34) agreement, and it tended to assert unsupported claims; 0 new strong-tier calls thanks to reference reuse |
 | Fabrication is caught in code | claims marked supported with no valid evidence id are demoted; 0 of 19 on the strong tier that day |
-| Failures become tests | 1,105 offline tests in the source project; every live failure that day (stale lock after SIGTERM, a pause that did not block, a wrong field target) got a pinned test |
-| Cost | 9 subscription calls plus 70 free local calls for the confirmed outcome; $0 extra |
+| Failures become tests | 1,105 offline tests in the (private) source project at the time, not included here; every live failure that day (stale lock after SIGTERM, a pause that did not block, a wrong field target) got a pinned test |
+| Cost | on 2026-09-13: 6 pipeline calls and 5 strong-tier evaluation calls on the subscription, plus 70 free local-model calls in the agreement study; $0 extra |
 
 ## What the harness did not solve there
 

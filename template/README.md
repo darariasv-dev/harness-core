@@ -1,4 +1,4 @@
-# myproject (Harness_Pipeline template)
+# myproject (harness-core template)
 
 A complete starter project on `harness_core`. Rename `myproject/`, then replace the stage
 bodies in `myproject/stages.py`. Everything else is already wired:
@@ -16,8 +16,8 @@ bodies in `myproject/stages.py`. Everything else is already wired:
 | `CHECKPOINT.md` | the 8-field block an agent resumes from |
 
 ```
-pip install -e /path/to/Harness_Pipeline && pip install -e . && pytest -q
+pip install -e /path/to/harness-core && pip install -e . && pytest -q
 MYPROJECT_USE_LIVE_MODEL=1 python -m myproject.run run
 python -m myproject.run usage
-python /path/to/Harness_Pipeline/scripts/eval_routing.py --adapter myproject.routing_eval_adapter --tasks example_assessment
+python /path/to/harness-core/scripts/eval_routing.py --adapter myproject.routing_eval_adapter --tasks example_assessment
 ```

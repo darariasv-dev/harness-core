@@ -15,9 +15,8 @@ that mapping is the caller's own (see harness_core's own no-domain-words boundar
 specific project's ledger paths belong in that caller's own wrapper script, not here).
 
     python scripts/usage_report.py --multi \
-        engine=~/Opportunity-Engine/data/agent_ledger.db \
-        jobs='~/agent-system/data/pipeline/runs/*/ledger.db' \
-        control=~/mission-control/.mission-control/role_ledger.db \
+        alpha=~/code/project-alpha/data/ledger.db \
+        beta='~/code/project-beta/data/runs/*/ledger.db' \
         [--days 7]"""
 from __future__ import annotations
 

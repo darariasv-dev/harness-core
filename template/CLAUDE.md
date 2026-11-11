@@ -1,4 +1,4 @@
-# CLAUDE.md — this project runs on Harness_Pipeline
+# CLAUDE.md — this project runs on harness-core
 
 Resuming? Read `CHECKPOINT.md` first (the 8-field block at the top is the current state).
 

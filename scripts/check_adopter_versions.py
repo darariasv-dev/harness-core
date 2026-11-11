@@ -15,8 +15,8 @@ actually executes (harness_core.__file__ resolves straight into this repo's sour
 current. Importing for real is the only way to see what's actually running.
 
 Exits 0 if every found adopter matches the current version, 1 if any adopter is stale or
-missing, 2 if the current version itself can't be determined. Known adopters are listed in
-ADOPTERS below; an adopter directory that doesn't exist on this machine is reported as
+missing, 2 if the current version itself can't be determined. Known adopters are read from
+an untracked adopters.local.json (see adopters.example.json); an adopter directory that doesn't exist on this machine is reported as
 "not found" rather than guessed at.
 
 Only checks each adopter's own `<repo>/.venv` -- a project that also runs real work out of a
@@ -25,6 +25,7 @@ hand; this script has no way to discover one it isn't told about."""
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -32,16 +33,17 @@ import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ADOPTERS = {
-    "agent-system": "~/agent-system",
-    "Opportunity-Engine": "~/Opportunity-Engine",
-    # Not a top-level dir: its real repo lives under the Codex outputs tree. Omitted here until
-    # 2026-09-23, which let its venv sit on a non-editable 0.2.2 install unnoticed.
-    "Mission Control": "~/Documents/Codex/2026-09-13/i-w/outputs/mission-control",
-    # Opportunity-Engine's scheduled sweep runs from its own worktree + venv (its gap 0033);
-    # real Auditor calls happen there, not in the interactive checkout above.
-    "Opportunity-Engine sweep runner": "~/.opportunity-engine-sweep-runner",
-}
+def load_adopters(path: str = os.path.join(REPO_ROOT, "adopters.local.json")) -> dict:
+    """Adopters are machine-specific, so they live in an untracked JSON file
+    ({"name": "~/path/to/project", ...}); see adopters.example.json."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+
+ADOPTERS = load_adopters()
 
 
 def current_version() -> str | None:
@@ -79,6 +81,10 @@ def main() -> int:
         return 2
 
     print(f"Current harness-core version: {current}\n")
+
+    if not ADOPTERS:
+        print("No adopters configured. Copy adopters.example.json to adopters.local.json and list your projects.")
+        return 0
 
     drift_found = False
     for name, raw_path in ADOPTERS.items():

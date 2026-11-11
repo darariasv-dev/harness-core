@@ -15,3 +15,6 @@ runs/
 *.jsonl
 !tests/**/*.jsonl
 .claude/settings.local.json
+# machine-specific config
+*.local.json
+*.local.txt

@@ -1,7 +1,7 @@
 # Checkpoint — read this first when resuming
 
 ```
-COMMAND:    Initial project scaffold from the Harness_Pipeline template.
+COMMAND:    Initial project scaffold from the harness-core template.
 COMPLETED:  Template copied; router/cache/stages/run wired; offline test suite green.
 PHASE:      Scaffolding
 PILOT:      n/a

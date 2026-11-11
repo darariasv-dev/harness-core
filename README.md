@@ -1,4 +1,20 @@
-# Harness_Pipeline
+# harness-core
+
+[![tests](https://github.com/darariasv-dev/harness-core/actions/workflows/tests.yml/badge.svg)](https://github.com/darariasv-dev/harness-core/actions/workflows/tests.yml)
+
+**In plain terms:** a small Python library that makes every AI-model call in a project
+accountable. Each call states its purpose and is sent to the cheapest model proven good enough
+for it; anything a person will read is locked to the strongest model; every call is logged;
+unchanged work is never paid for twice; and a claim with no evidence behind it is downgraded
+before anyone sees it.
+
+**Why it exists:** I built an AI job-search assistant and needed cost, quality and an audit
+trail to be guaranteed by code rather than by remembering to do the right thing. The rules are
+set up front and changed only on measured evidence: a task moves to a cheaper model only at 90%
+or better agreement with the strong model on real inputs. In its first complete live runs the
+pipeline needed 19 model calls across 22 runs, with $0 spent beyond an existing subscription
+(details and the exact numbers in `docs/case-study.md`). Built with Claude Code.
+
 
 A reusable harness for pipelines that call language models: **route every call by purpose,
 log it, cache it by fingerprint, validate what comes back, escalate on evidence, and never
@@ -6,8 +22,8 @@ let a setting cost-optimize what a human reads.** Domain-agnostic by test. Extra
 pipeline that ran end to end for real (see `docs/case-study.md`).
 
 ```
-pip install -e .            # library: harness_core
-pytest -q                   # 142 offline tests; any real network/process call fails loudly
+pip install -e ".[test]"   # library: harness_core, plus pytest
+pytest -q                   # 157 offline tests; any real network/process call fails loudly
 python examples/minimal_pipeline.py --run-dir /tmp/x     # whole pattern, fake provider, no model calls
 cp -R template ../my-new-project && cd ../my-new-project && pip install -e . && pytest -q
 ```
@@ -44,7 +60,7 @@ flowchart LR
 
 ```
 harness_core/        the library (no domain words; enforced by a test)
-tests/               137 offline tests
+tests/               offline tests (run `pytest -q`)
 template/            a complete starter project: router pins, cache fingerprints, cache-first
                      assess stage with demotion logging, run CLI under the lock, eval adapter,
                      tests, CLAUDE.md, CHECKPOINT.md, .claude/agents roles

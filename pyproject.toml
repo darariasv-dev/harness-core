@@ -8,7 +8,19 @@ version = "0.4.0"
 description = "Domain-agnostic core of a headless-model pipeline harness: tiered routing over pluggable providers, composite-fingerprint cache, usage ledger, failure classes, workflow lock, demotion/escalation rule, agreement evals, checkpoint block, offline test guard."
 readme = "README.md"
 requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Darwing Arias" }]
+keywords = ["llm", "claude", "model-routing", "llmops", "evaluation", "cost-control"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
 dependencies = ["httpx", "PyYAML"]
+
+[project.urls]
+Repository = "https://github.com/darariasv-dev/harness-core"
+Issues = "https://github.com/darariasv-dev/harness-core/issues"
 
 [project.optional-dependencies]
 test = ["pytest"]
